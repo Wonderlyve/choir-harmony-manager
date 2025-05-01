@@ -23,8 +23,8 @@ interface MemberListProps {
 
 const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterParish, setFilterParish] = useState<string>('');
-  const [filterGender, setFilterGender] = useState<Gender | ''>('');
+  const [filterParish, setFilterParish] = useState<string>('all');
+  const [filterGender, setFilterGender] = useState<Gender | 'all'>('all');
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -36,8 +36,8 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
       member.postNom.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.prenom.toLowerCase().includes(searchTerm.toLowerCase());
       
-    const matchesParish = filterParish === '' || member.paroisse === filterParish;
-    const matchesGender = filterGender === '' || member.genre === filterGender;
+    const matchesParish = filterParish === 'all' || member.paroisse === filterParish;
+    const matchesGender = filterGender === 'all' || member.genre === filterGender;
     
     return matchesSearch && matchesParish && matchesGender;
   });
@@ -70,7 +70,7 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="">Toutes les paroisses</SelectItem>
+                <SelectItem value="all">Toutes les paroisses</SelectItem>
                 {uniqueParishes.map(parish => (
                   <SelectItem key={parish} value={parish}>{parish}</SelectItem>
                 ))}
@@ -78,13 +78,13 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
             </SelectContent>
           </Select>
           
-          <Select value={filterGender} onValueChange={(value: string) => setFilterGender(value as Gender | '')}>
+          <Select value={filterGender} onValueChange={(value: string) => setFilterGender(value as Gender | 'all')}>
             <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="">Tous les genres</SelectItem>
+                <SelectItem value="all">Tous les genres</SelectItem>
                 <SelectItem value="Homme">Homme</SelectItem>
                 <SelectItem value="Femme">Femme</SelectItem>
               </SelectGroup>

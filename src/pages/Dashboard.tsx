@@ -89,7 +89,7 @@ const Dashboard: React.FC = () => {
                   </div>
                   <span className="font-medium">{malePercentage}%</span>
                 </div>
-                <Progress value={malePercentage} className="h-2 bg-muted" indicatorClass="bg-blue-500" />
+                <Progress value={malePercentage} className="h-2 bg-muted" />
               </div>
               
               <div className="space-y-2">
@@ -100,7 +100,7 @@ const Dashboard: React.FC = () => {
                   </div>
                   <span className="font-medium">{femalePercentage}%</span>
                 </div>
-                <Progress value={femalePercentage} className="h-2 bg-muted" indicatorClass="bg-pink-500" />
+                <Progress value={femalePercentage} className="h-2 bg-muted" />
               </div>
             </div>
           </CardContent>

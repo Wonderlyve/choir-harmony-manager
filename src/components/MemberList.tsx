@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Search, UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MemberListProps {
   members: Member[];
@@ -25,6 +26,7 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
   const [filterParish, setFilterParish] = useState<string>('');
   const [filterGender, setFilterGender] = useState<Gender | ''>('');
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const uniqueParishes = Array.from(new Set(members.map(member => member.paroisse)));
 
@@ -42,16 +44,16 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
         {title && <h2 className="text-xl font-semibold">{title}</h2>}
-        <Button onClick={() => navigate('/add')}>
+        <Button onClick={() => navigate('/add')} className="w-full sm:w-auto">
           <UserPlus size={16} className="mr-2" />
           Ajouter un membre
         </Button>
       </div>
       
-      <div className="flex flex-col gap-4 md:flex-row">
-        <div className="relative flex-1">
+      <div className="flex flex-col gap-4">
+        <div className="relative w-full">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Rechercher un membre..."
@@ -61,9 +63,9 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
           />
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full">
           <Select value={filterParish} onValueChange={setFilterParish}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Paroisse" />
             </SelectTrigger>
             <SelectContent>
@@ -77,7 +79,7 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
           </Select>
           
           <Select value={filterGender} onValueChange={(value: string) => setFilterGender(value as Gender | '')}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
             <SelectContent>
@@ -96,7 +98,7 @@ const MemberList: React.FC<MemberListProps> = ({ members, title }) => {
           <p className="text-lg text-muted-foreground">Aucun membre trouvé</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {filteredMembers.map(member => (
             <MemberCard key={member.id} member={member} />
           ))}

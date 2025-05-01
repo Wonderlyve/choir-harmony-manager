@@ -29,6 +29,7 @@ interface MemberFormProps {
   mode: 'add' | 'edit';
 }
 
+// Define the schema to match the required fields in Member type
 const memberFormSchema = z.object({
   nom: z.string().min(2, { message: 'Le nom doit contenir au moins 2 caractères' }),
   postNom: z.string().min(2, { message: 'Le post-nom doit contenir au moins 2 caractères' }),
@@ -47,6 +48,7 @@ const MemberForm: React.FC<MemberFormProps> = ({ initialData, mode }) => {
   const { addMember, updateMember } = useMembers();
   const navigate = useNavigate();
 
+  // Make sure all required fields have a default value
   const defaultValues: MemberFormValues = {
     nom: initialData?.nom || '',
     postNom: initialData?.postNom || '',
@@ -64,7 +66,16 @@ const MemberForm: React.FC<MemberFormProps> = ({ initialData, mode }) => {
 
   const onSubmit = (values: MemberFormValues) => {
     if (mode === 'add') {
-      addMember(values);
+      // Ensure all required fields are present
+      addMember({
+        nom: values.nom,
+        postNom: values.postNom,
+        prenom: values.prenom,
+        genre: values.genre,
+        adresse: values.adresse,
+        paroisse: values.paroisse,
+        fonction: values.fonction
+      });
     } else if (mode === 'edit' && initialData) {
       updateMember(initialData.id, values);
     }

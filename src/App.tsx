@@ -18,22 +18,25 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="chorale/:gender" element={<ChoirMembers />} />
-            <Route path="paroisse/:parish" element={<ParishMembers />} />
-            <Route path="membres" element={<AllMembers />} />
-            <Route path="add" element={<AddMember />} />
-            <Route path="edit/:id" element={<EditMember />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </TooltipProvider>
+      {/* Move TooltipProvider inside BrowserRouter, after React has fully initialized */}
+      <Routes>
+        <Route path="/" element={
+          <TooltipProvider>
+            <Layout />
+          </TooltipProvider>
+        }>
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="chorale/:gender" element={<ChoirMembers />} />
+          <Route path="paroisse/:parish" element={<ParishMembers />} />
+          <Route path="membres" element={<AllMembers />} />
+          <Route path="add" element={<AddMember />} />
+          <Route path="edit/:id" element={<EditMember />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Toaster />
+      <Sonner />
     </BrowserRouter>
   </QueryClientProvider>
 );
